@@ -20,11 +20,12 @@ source ~/.nvm/nvm.sh && npm run build
 
 ## Architecture
 
-This is a single-file React app — all logic and UI lives in `src/App.jsx`. There are no separate components, routing, or data persistence layer; state is held in `useState` and resets on page reload.
+React + Vite app with no routing and no data persistence — state resets on page reload.
 
-**Known intentional issues (part of a course exercise):**
-- A bug in the income/expense calculation (amounts stored as strings, not numbers)
-- Poor UI styling
-- Messy, unstructured code
+**Component structure:**
+- `App.jsx` — holds the `transactions` array in state, renders the three child components
+- `Summary.jsx` — receives `transactions` as a prop, computes and displays totals (income, expenses, balance)
+- `TransactionForm.jsx` — owns its own form state, calls `onAdd(transaction)` prop when submitted
+- `TransactionList.jsx` — receives `transactions` as a prop, owns its own filter state (type/category)
 
-The `categories` array and transaction shape (`id`, `description`, `amount`, `type`, `category`, `date`) are the core data model.
+The `categories` array is duplicated in `TransactionForm.jsx` and `TransactionList.jsx`. The transaction shape is `{ id, description, amount, type, category, date }` where `amount` is a number.
