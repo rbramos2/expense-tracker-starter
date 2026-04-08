@@ -1,10 +1,6 @@
 import { useState } from 'react'
-
-const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
-
-function fmt(n) {
-  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
+import { CATEGORIES } from './constants'
+import { formatCurrency, capitalize } from './utils'
 
 function TransactionList({ transactions, onDelete, selectedCategory, onCategoryChange }) {
   const [filterType, setFilterType] = useState("all");
@@ -16,6 +12,10 @@ function TransactionList({ transactions, onDelete, selectedCategory, onCategoryC
   if (selectedCategory !== "all") {
     filtered = filtered.filter(t => t.category === selectedCategory);
   }
+
+  const handleDelete = (id) => {
+    if (window.confirm("Delete this transaction?")) onDelete(id);
+  };
 
   return (
     <div className="transactions">
@@ -29,8 +29,8 @@ function TransactionList({ transactions, onDelete, selectedCategory, onCategoryC
           </select>
           <select value={selectedCategory} onChange={(e) => onCategoryChange(e.target.value)}>
             <option value="all">All Categories</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
+            {CATEGORIES.map(cat => (
+              <option key={cat} value={cat}>{capitalize(cat)}</option>
             ))}
           </select>
         </div>
@@ -42,8 +42,8 @@ function TransactionList({ transactions, onDelete, selectedCategory, onCategoryC
             <th>Date</th>
             <th>Description</th>
             <th>Category</th>
-            <th style={{ textAlign: 'right' }}>Amount</th>
-            <th style={{ textAlign: 'right' }}>Action</th>
+            <th className="th-right">Amount</th>
+            <th className="th-right">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -58,15 +58,10 @@ function TransactionList({ transactions, onDelete, selectedCategory, onCategoryC
               <td className="td-description">{t.description}</td>
               <td><span className="category-badge">{t.category}</span></td>
               <td className={`amount-cell ${t.type === "income" ? "income-amount" : "expense-amount"}`}>
-                {t.type === "income" ? "+" : "−"}${fmt(t.amount)}
+                {t.type === "income" ? "+" : "−"}${formatCurrency(t.amount)}
               </td>
               <td className="td-actions">
-                <button
-                  className="delete-btn"
-                  onClick={() => {
-                    if (window.confirm("Delete this transaction?")) onDelete(t.id);
-                  }}
-                >
+                <button className="delete-btn" onClick={() => handleDelete(t.id)}>
                   Remove
                 </button>
               </td>

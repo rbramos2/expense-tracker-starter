@@ -26,7 +26,7 @@ function SpendingChart({ transactions, selectedCategory, onCategoryClick }) {
   const expensesByCategory = transactions
     .filter(t => t.type === 'expense')
     .reduce((acc, t) => {
-      acc[t.category] = (acc[t.category] || 0) + parseFloat(t.amount);
+      acc[t.category] = (acc[t.category] || 0) + t.amount;
       return acc;
     }, {});
 
