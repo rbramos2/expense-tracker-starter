@@ -3,8 +3,10 @@ import './App.css'
 import Summary from './Summary'
 import TransactionForm from './TransactionForm'
 import TransactionList from './TransactionList'
+import SpendingChart from './SpendingChart'
 
 function App() {
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [transactions, setTransactions] = useState([
     { id: 1, description: "Salary", amount: 5000, type: "income", category: "salary", date: "2025-01-01" },
     { id: 2, description: "Rent", amount: 1200, type: "expense", category: "housing", date: "2025-01-02" },
@@ -23,7 +25,8 @@ function App() {
 
       <Summary transactions={transactions} />
       <TransactionForm onAdd={(t) => setTransactions([...transactions, t])} />
-      <TransactionList transactions={transactions} onDelete={(id) => setTransactions(transactions.filter(t => t.id !== id))} />
+      <SpendingChart transactions={transactions} selectedCategory={selectedCategory} onCategoryClick={setSelectedCategory} />
+      <TransactionList transactions={transactions} onDelete={(id) => setTransactions(transactions.filter(t => t.id !== id))} selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
     </div>
   );
 }

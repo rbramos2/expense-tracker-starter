@@ -2,16 +2,15 @@ import { useState } from 'react'
 
 const categories = ["food", "housing", "utilities", "transport", "entertainment", "salary", "other"];
 
-function TransactionList({ transactions, onDelete }) {
+function TransactionList({ transactions, onDelete, selectedCategory, onCategoryChange }) {
   const [filterType, setFilterType] = useState("all");
-  const [filterCategory, setFilterCategory] = useState("all");
 
   let filteredTransactions = transactions;
   if (filterType !== "all") {
     filteredTransactions = filteredTransactions.filter(t => t.type === filterType);
   }
-  if (filterCategory !== "all") {
-    filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory);
+  if (selectedCategory !== "all") {
+    filteredTransactions = filteredTransactions.filter(t => t.category === selectedCategory);
   }
 
   return (
@@ -23,7 +22,7 @@ function TransactionList({ transactions, onDelete }) {
           <option value="income">Income</option>
           <option value="expense">Expense</option>
         </select>
-        <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value)}>
+        <select value={selectedCategory} onChange={(e) => onCategoryChange(e.target.value)}>
           <option value="all">All Categories</option>
           {categories.map(cat => (
             <option key={cat} value={cat}>{cat}</option>
