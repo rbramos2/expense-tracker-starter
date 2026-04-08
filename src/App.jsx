@@ -18,15 +18,36 @@ function App() {
     { id: 8, description: "Netflix", amount: 15, type: "expense", category: "entertainment", date: "2025-01-10" },
   ]);
 
+  const today = new Date().toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
   return (
     <div className="app">
-      <h1>Finance Tracker</h1>
-      <p className="subtitle">Track your income and expenses</p>
+      <header className="app-header">
+        <div>
+          <h1>Finance Tracker</h1>
+          <p className="subtitle">Personal expense management</p>
+        </div>
+        <div className="app-date">{today}</div>
+      </header>
 
       <Summary transactions={transactions} />
+      <SpendingChart
+        transactions={transactions}
+        selectedCategory={selectedCategory}
+        onCategoryClick={setSelectedCategory}
+      />
       <TransactionForm onAdd={(t) => setTransactions([...transactions, t])} />
-      <SpendingChart transactions={transactions} selectedCategory={selectedCategory} onCategoryClick={setSelectedCategory} />
-      <TransactionList transactions={transactions} onDelete={(id) => setTransactions(transactions.filter(t => t.id !== id))} selectedCategory={selectedCategory} onCategoryChange={setSelectedCategory} />
+      <TransactionList
+        transactions={transactions}
+        onDelete={(id) => setTransactions(transactions.filter(t => t.id !== id))}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+      />
     </div>
   );
 }
