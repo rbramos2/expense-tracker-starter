@@ -37,6 +37,8 @@ html {
 body {
   font-family: 'Sora', sans-serif;
   background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 100% 60% at 50% 0%, rgba(196, 154, 60, 0.035) 0%, transparent 60%);
   color: var(--text-primary);
   min-height: 100vh;
   font-size: 14px;
